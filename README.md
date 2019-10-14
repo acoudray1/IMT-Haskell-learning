@@ -1,3 +1,3 @@
 # learn_haskell
 
-Haskell exercises. IMT Atlantique
+Haskell exercises done as part of a course at IMT Atlantique.
