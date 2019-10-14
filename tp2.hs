@@ -181,7 +181,10 @@ myFilter f [] = []
 
 -- mySplitAt 3 [1..10] -> ([1,2,3],[4,5,6,7,8,9,10])
 mySplitAt :: Int -> [a] -> ([a],[a])
-mySplitAt n (x:xs) = (x:fst(mySplitAt (n-1) xs))
+mySplitAt 0 xs = ([],xs)
+mySplitAt n [] = ([],[])
+mySplitAt n (x:xs) = (x:first, second)
+    where (first, second) = mySplitAt (n-1) xs
 
 -- myZip [1,3,5] [2,4,6] -> [(1,2),(3,4),(5,6)]
 myZip :: [a] -> [b] -> [(a,b)] 
@@ -205,7 +208,7 @@ myUncurry f (a,b) = f a b
 
 --
 myZipWith' :: (a -> b -> c) -> [a] -> [b] -> [c] 
-myZipWith' = undefined
+myZipWith' f xs ys = myMap (myUncurry f) (myZip xs ys)
 
 -- myUnzip [(1,2),(3,4),(5,6)] -> ([1,3,5],[2,4,6])
 myUnzip :: [(a,b)] -> ([a],[b])
@@ -216,22 +219,25 @@ myUnzip [] = ([],[])
 -- TODO: redefinir en utilisant foldr
 
 myConcat' :: [[a]] -> [a]
-myConcat' = undefined
+myConcat' xs = foldr (++) [] xs
 
-myMap' ::  (a -> b) -> [a] -> [b]
-myMap' = undefined
+-- myMap' reverse ["abc", "deux", "cinq"] -> ["cba", "xued", "qnic"]
+myMap' :: (a -> b) -> [a] -> [b]
+myMap' f xs = foldr (\xs -> \fxs -> (f xs:fxs)) [] xs
 
 myOr' ::  [Bool] -> Bool
-myOr' = undefined
+myOr' xs = foldr (||) False xs
 
+-- myAny (>3) [1,2,4,5] -> True
 myAny :: (a -> Bool) -> [a] -> Bool
-myAny = undefined
+myAny f xs = foldr (\xs -> \fxs -> (f xs) || fxs) False xs
 
+-- myAll (>3) [4,5,6] -> True
 myAll :: (a -> Bool) -> [a] -> Bool
-myAll = undefined
+myAll f xs = foldr (\xs -> \fxs -> (f xs) && fxs) True xs
 
 myProduct :: [Int] -> Int
-myProduct = undefined
+myProduct xs = foldr (\x -> \fx -> x * fx) 1 xs
 
 -- TODO: calculuer les 50 plus petits nombres premiers 2, 3, 5, 7, 11...
 
